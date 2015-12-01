@@ -1,10 +1,28 @@
 app.controller 'mainCtrl', ($scope) ->
   dateFormat = 'M/D/YYYY'
 
+  $scope.monthNames = [
+    {full: 'январе', short: 'янв'},
+    {full: 'феврале', short: 'фев'},
+    {full: 'марте', short: 'мар'},
+    {full: 'апреле', short: 'апр'},
+    {full: 'мае', short: 'май'},
+    {full: 'июне', short: 'июнь'},
+    {full: 'июле', short: 'июль'},
+    {full: 'августе', short: 'авг'},
+    {full: 'сентябре', short: 'сен'},
+    {full: 'октябре', short: 'окт'},
+    {full: 'ноябре', short: 'ноя'},
+    {full: 'декабре', short: 'дек'}
+  ]
+
   $scope.isDataPrepared = false
 
   $scope.data = {}
   $scope.dates = []
+
+  $scope.model =
+    currentDate: undefined
 
   # Parse main data
   parseMainData = (error, rawData) ->
@@ -20,13 +38,14 @@ app.controller 'mainCtrl', ($scope) ->
       raw: key
       moment: moment key, dateFormat
 
+    $scope.model.currentDate = $scope.dates[0]
+
     industries.forEach (industry) ->
       industryData = rawData.filter (rD) -> rD['Проф.область'] is industry
       $scope.data[industry] = []
 
       $scope.dates.forEach (date) ->
-        dataPiece =
-          date: date.moment.toDate()
+        dataPiece = {}
 
         nOfJobs = parseInt _.find(industryData, {'Москва': 'Кол-во вакансий, средняя за день, шт.'})[date.raw].replace(',', '')
         nOfCVs = parseInt _.find(industryData, {'Москва': 'Кол-во резюме, средняя за день, шт.'})[date.raw].replace(',', '')
@@ -38,6 +57,7 @@ app.controller 'mainCtrl', ($scope) ->
         else
           avgSalary = 30000
 
+        dataPiece.date = date.moment.toDate()
         dataPiece.nOfJobs = nOfJobs
         dataPiece.nOfCVs = nOfCVs
         dataPiece.hhIndex = hhIndex

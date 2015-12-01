@@ -1,0 +1,28 @@
+@import '../variables';
+
+.date-slider {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 65px;
+}
+
+.date-slider__captions {
+	position: relative;
+}
+
+.date-slider__captions .caption {
+	position: absolute;
+	font-family: $helvetica-neue-regular;
+	font-size: $common-font-size;
+}
+
+.date-slider__handle {
+	position: absolute;
+	top: 35px;
+	width: 17px;
+	height: 30px;
+	background-image: url(../img/accessories/slider-handle.png);
+	background-size: 17px 30px;
+	cursor: pointer;
+}

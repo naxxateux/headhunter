@@ -1,0 +1,21 @@
+@import 'variables';
+
+.head {
+  margin: 20px 0 0 $common-margin;
+  width: 1100px;
+  box-sizing: border-box;
+  font-family: $helvetica-neue-regular;
+  font-size: $header-font-size;
+}
+
+.date-slider-container {
+  margin: 20px 0 0 $common-margin;
+  width: 1100px;
+  box-sizing: border-box;
+}
+
+.content {
+  margin: 20px 0 0 $common-margin;
+  width: 1100px;
+  box-sizing: border-box;
+}

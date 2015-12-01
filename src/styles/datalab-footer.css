@@ -2,7 +2,7 @@
 
 .datalab-footer {
   margin: 40px 0 0 $common-margin;
-  width: 1000px;
+  width: 1100px;
   box-sizing: border-box;
 }
 
@@ -22,7 +22,7 @@
 
 .datalab-footer__data-caption {
   display: inline-block;
-  margin-left: 20px; 
+  margin-left: 20px;
 }
 
 .likely {

@@ -1,1 +1,14 @@
-<div data-ng-if="isDataPrepared"></div>
+<div data-ng-if="isDataPrepared">
+  <div class="head">Рынок труда Москвы в {{monthNames[model.currentDate.moment.month()].full + ' ' + model.currentDate.moment.year()}} года</div>
+  <div class="date-slider-container">
+    <date-slider
+      dates="dates"
+      current-date="model.currentDate"
+      month-names="monthNames">
+    <date-slider>
+  </div>
+  <div class="content">
+    <div class="content__graph"></div>
+    <div class="content__info-block"></div>
+  </div>
+</div>
