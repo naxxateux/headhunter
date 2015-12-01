@@ -30,7 +30,10 @@ app.controller 'mainCtrl', ($scope) ->
       console.log error
 
     rawData = rawData[0].concat rawData[1]
+
     industries = _.uniq _.pluck rawData, 'Проф.область'
+    _.remove industries, (industry) -> industry is 'Все сферы'
+
     $scope.dates = _.keys rawData[0]
     .filter (key) ->
       key isnt 'Москва' and key isnt 'Проф.область'
@@ -57,7 +60,7 @@ app.controller 'mainCtrl', ($scope) ->
         else
           avgSalary = 30000
 
-        dataPiece.date = date.moment.toDate()
+        dataPiece.date = date
         dataPiece.nOfJobs = nOfJobs
         dataPiece.nOfCVs = nOfCVs
         dataPiece.hhIndex = hhIndex
@@ -67,6 +70,8 @@ app.controller 'mainCtrl', ($scope) ->
         $scope.data[industry].push dataPiece
         return
       return
+
+    console.log $scope.data
 
     $scope.isDataPrepared = true
 
