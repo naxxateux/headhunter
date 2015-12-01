@@ -2,13 +2,17 @@
   <div class="head">Рынок труда Москвы в {{monthNames[model.currentDate.moment.month()].full + ' ' + model.currentDate.moment.year()}} года</div>
   <div class="date-slider-container">
     <date-slider
-      dates="dates"
-      current-date="model.currentDate"
-      month-names="monthNames">
+      data-dates="dates"
+      data-current-date="model.currentDate"
+      data-month-names="monthNames">
     <date-slider>
   </div>
   <div class="content">
-    <div class="content__graph"></div>
+    <div class="content__chart">
+      <chart
+        data-data="data"
+        data-current-date="model.currentDate"></chart>
+    </div>
     <div class="content__info-block"></div>
   </div>
 </div>
