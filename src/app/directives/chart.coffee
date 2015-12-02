@@ -6,6 +6,7 @@ app.directive 'chart', ($timeout) ->
     data: '='
     dates: '='
     currentDate: '='
+    zoomRatio: '='
   link: ($scope, $element, $attrs) ->
     d3.selection.prototype.last = -> d3.select @[0][@.size() - 1]
 
@@ -29,6 +30,15 @@ app.directive 'chart', ($timeout) ->
     .attr 'width', outerWidth
     .attr 'height', outerHeight
 
+    svg.append 'defs'
+    .append 'clipPath'
+    .attr 'id', 'clip-rect'
+    .append 'rect'
+    .attr 'x', 0
+    .attr 'y', 0
+    .attr 'width', width
+    .attr 'height', height
+
     g = svg.append 'g'
     .classed 'main', true
     .attr 'transform', 'translate(' + padding.left + ', ' + padding.top + ')'
@@ -45,8 +55,8 @@ app.directive 'chart', ($timeout) ->
         return
       return
 
-    xExtent[1] = xExtent[1] * 1.1
-    yExtent[1] = yExtent[1] * 1.1
+    xExtent[1] = xExtent[1] * 1.1 * $scope.zoomRatio
+    yExtent[1] = yExtent[1] * 1.1 * $scope.zoomRatio
 
     x = d3.scale.linear()
     .domain xExtent
@@ -73,21 +83,25 @@ app.directive 'chart', ($timeout) ->
     .attr 'transform', 'translate(0, ' + height + ')'
     .call xAxis
 
-    xAxisLastDigit = d3element.selectAll '.x-axis .tick text'
+    xAxisLastText = d3element.selectAll '.x-axis .tick text'
     .last()
     .text()
-    .slice -1
+
+    xAxisTitleX = d3element.selectAll '.x-axis .tick text'
+    .last()
+    .node()
+    .getBBox().x
 
     xAxisTitle = d3element.selectAll '.x-axis .tick'
     .last()
     .append 'text'
-    .attr 'x', 0
+    .attr 'x', xAxisTitleX
     .attr 'y', 6
     .attr 'dy', '.71em'
 
     xAxisTitle.append 'tspan'
     .style 'visibility', 'hidden'
-    .text xAxisLastDigit + ' '
+    .text xAxisLastText + ' '
 
     xAxisTitle.append 'tspan'
     .text 'тыс. вакансий'
@@ -160,6 +174,7 @@ app.directive 'chart', ($timeout) ->
 
     industryCirclesGroup = g.append 'g'
     .attr 'class', 'industry-circles'
+    .attr 'clip-path', 'url(#clip-rect)'
 
     _.keys($scope.data).forEach (key) ->
       industryCircleGroup = industryCirclesGroup.append 'g'
@@ -188,7 +203,7 @@ app.directive 'chart', ($timeout) ->
       .duration 500
       .attr 'r', (d) ->
         dataPiece = _.find d, {'date': $scope.currentDate}
-        Math.sqrt dataPiece.avgSalary / Math.PI / 180
+        Math.sqrt dataPiece.avgSalary / Math.PI / 180 / $scope.zoomRatio
       return
 
     $scope.$watch 'currentDate', -> updateGraph()
