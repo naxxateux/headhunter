@@ -56,6 +56,8 @@ app.directive 'chart', ($timeout) ->
     .domain yExtent
     .range [height, 0]
 
+    color = d3.scale.category20()
+
     tickFormat = (d) ->
       d * 0.001
 
@@ -120,6 +122,42 @@ app.directive 'chart', ($timeout) ->
     .attr 'dy', '1em'
     .text 'резюме'
 
+    jobCVRatios = [20, 10, 6, 5, 4, 3, 2, 1]
+
+    ratiosGroup = g.append 'g'
+    .attr 'class', 'ratios'
+
+    jobCVRatios.forEach (ratio) ->
+      ratioGroup = ratiosGroup.append 'g'
+      .attr 'class', 'ratio'
+
+      nOfJobs = xExtent[1]
+      nOfCVs = nOfJobs * ratio
+      captionPosition = 'right'
+
+      if nOfCVs > yExtent[1]
+        nOfCVs = yExtent[1]
+        nOfJobs = nOfCVs / ratio
+        captionPosition = 'top'
+
+      ratioGroup.append 'line'
+      .attr 'x1', x 0
+      .attr 'y1', y 0
+      .attr 'x2', x nOfJobs
+      .attr 'y2', y nOfCVs
+      .style 'stroke', '#333'
+      .style 'stroke-width', .1
+
+      ratioGroup.append 'text'
+      .attr 'x', x nOfJobs
+      .attr 'y', y nOfCVs
+      .attr 'dy', if captionPosition is 'right' then '.32em' else '-.32em'
+      .attr 'dx', if captionPosition is 'right' then '.32em' else 0
+      .style 'font-size', '.9em'
+      .style 'fill', '#ccc'
+      .text ratio
+      return
+
     industryCirclesGroup = g.append 'g'
     .attr 'class', 'industry-circles'
 
@@ -132,7 +170,7 @@ app.directive 'chart', ($timeout) ->
       .attr 'cx', 0
       .attr 'cy', 0
       .attr 'r', 0
-      .style 'fill', '#549fab'
+      .style 'fill', color key
       .style 'opacity', .7
       return
 

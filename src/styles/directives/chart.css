@@ -2,6 +2,8 @@
 
 .chart {
   font-family: $helvetica-neue-regular;
+  font-size: $small-font-size;
+  fill: #333;
 }
 
 .chart__svg {
@@ -12,8 +14,4 @@
   fill: none;
   stroke: #333;
   stroke-width: .1;
-}
-
-.chart__svg .axis text {
-  font-size: $small-font-size;
 }
