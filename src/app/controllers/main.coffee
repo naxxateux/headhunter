@@ -71,8 +71,6 @@ app.controller 'mainCtrl', ($scope) ->
         return
       return
 
-    console.log $scope.data
-
     $scope.isDataPrepared = true
 
     $scope.$apply()

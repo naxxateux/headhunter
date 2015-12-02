@@ -33,16 +33,13 @@ app.directive 'chart', ($timeout) ->
 
     xExtent = [0, -Infinity]
     yExtent = [0, -Infinity]
-    rExtent = [Infinity, -Infinity]
 
     $scope.dates.forEach (date) ->
       _.keys($scope.data).forEach (key) ->
         dataPiece = _.find $scope.data[key], {'date': date}
 
-        xExtent[1] = Math.max xExtent[1], dataPiece.nOfCVs
-        yExtent[1] = Math.max yExtent[1], dataPiece.nOfJobs
-        rExtent[0] = Math.min rExtent[0], dataPiece.avgSalary
-        rExtent[1] = Math.max rExtent[1], dataPiece.avgSalary
+        xExtent[1] = Math.max xExtent[1], dataPiece.nOfJobs
+        yExtent[1] = Math.max yExtent[1], dataPiece.nOfCVs
         return
       return
 
@@ -56,10 +53,6 @@ app.directive 'chart', ($timeout) ->
     y = d3.scale.linear()
     .domain yExtent
     .range [height, 0]
-
-    r = d3.scale.linear()
-    .domain rExtent
-    .range [5, 30]
 
     tickFormat = (d) ->
       d * 0.001
@@ -86,7 +79,8 @@ app.directive 'chart', ($timeout) ->
     .attr 'y', 0
     .attr 'dy', '-.71em'
     .style 'text-anchor', 'end'
-    .text 'Ср. кол-во резюме, тыс. шт.'
+    .text 'Ср. кол-во вакансий, тыс. шт.'
+
 
     g.append 'g'
     .attr 'class', 'axis y-axis'
@@ -97,7 +91,7 @@ app.directive 'chart', ($timeout) ->
     .attr 'y', 0
     .attr 'dy', '.32em'
     .style 'text-anchor', 'start'
-    .text 'Ср. кол-во вакансий, тыс. шт.'
+    .text 'Ср. кол-во резюме, тыс. шт.'
 
     industryCirclesGroup = g.append 'g'
     .attr 'class', 'industry-circles'
@@ -110,7 +104,7 @@ app.directive 'chart', ($timeout) ->
       industryCircleGroup.append 'circle'
       .attr 'cx', 0
       .attr 'cy', 0
-      .attr 'r', 5
+      .attr 'r', 0
       .style 'fill', '#549fab'
       .style 'stroke', 'none'
       .style 'stroke-width', 0
@@ -125,17 +119,15 @@ app.directive 'chart', ($timeout) ->
       .duration 500
       .attr 'transform', (d) ->
         dataPiece = _.find d, {'date': $scope.currentDate}
-        'translate(' + x(dataPiece.nOfCVs) + ', ' + y(dataPiece.nOfJobs) + ')'
+        'translate(' + x(dataPiece.nOfJobs) + ', ' + y(dataPiece.nOfCVs) + ')'
       .select 'circle'
       .transition()
       .duration 500
       .attr 'r', (d) ->
         dataPiece = _.find d, {'date': $scope.currentDate}
-        r dataPiece.avgSalary
+        Math.sqrt dataPiece.avgSalary / Math.PI / 225
       return
 
-    $scope.$watch 'currentDate', ->
-      updateGraph()
-      return
+    $scope.$watch 'currentDate', -> updateGraph()
 
     return
