@@ -125,7 +125,7 @@ app.directive 'chart', ($timeout) ->
       .duration 500
       .attr 'r', (d) ->
         dataPiece = _.find d, {'date': $scope.currentDate}
-        Math.sqrt dataPiece.avgSalary / Math.PI / 225
+        Math.sqrt dataPiece.avgSalary / Math.PI / 180
       return
 
     $scope.$watch 'currentDate', -> updateGraph()

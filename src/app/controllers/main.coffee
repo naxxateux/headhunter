@@ -58,7 +58,7 @@ app.controller 'mainCtrl', ($scope) ->
         if _.find(industryData, {'Москва': 'Средняя предлагаемая зарплата, руб.'})
           avgSalary = parseInt _.find(industryData, {'Москва': 'Средняя предлагаемая зарплата, руб.'})[date.raw].replace(',', '')
         else
-          avgSalary = 30000
+          avgSalary = 1000
 
         dataPiece.date = date
         dataPiece.nOfJobs = nOfJobs
