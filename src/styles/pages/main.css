@@ -17,6 +17,6 @@
 }
 
 .content__chart {
-  width: calc(410px + $common-margin * 2);
-  height: 450px;
+  width: 540px;
+  height: 440px;
 }

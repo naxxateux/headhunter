@@ -7,6 +7,8 @@ app.directive 'chart', ($timeout) ->
     dates: '='
     currentDate: '='
   link: ($scope, $element, $attrs) ->
+    d3.selection.prototype.last = -> d3.select @[0][@.size() - 1]
+
     element = $element[0]
     d3element = d3.select element
 
@@ -15,7 +17,7 @@ app.directive 'chart', ($timeout) ->
 
     padding =
       top: 20
-      right: 40
+      right: 100
       bottom: 20
       left: 40
 
@@ -61,37 +63,62 @@ app.directive 'chart', ($timeout) ->
     .scale x
     .orient 'bottom'
     .tickSize 3
-    .tickFormat tickFormat
-
-    yAxis = d3.svg.axis()
-    .scale y
-    .orient 'left'
-    .tickSize 3
+    .ticks 5
     .tickFormat tickFormat
 
     g.append 'g'
     .attr 'class', 'axis x-axis'
     .attr 'transform', 'translate(0, ' + height + ')'
     .call xAxis
-    .append 'text'
-    .attr 'class', 'axis-title'
-    .attr 'x', width
-    .attr 'y', 0
-    .attr 'dy', '-.71em'
-    .style 'text-anchor', 'end'
-    .text 'Ср. кол-во вакансий, тыс. шт.'
 
+    xAxisLastDigit = d3element.selectAll '.x-axis .tick text'
+    .last()
+    .text()
+    .slice -1
+
+    xAxisTitle = d3element.selectAll '.x-axis .tick'
+    .last()
+    .append 'text'
+    .attr 'x', 0
+    .attr 'y', 6
+    .attr 'dy', '.71em'
+
+    xAxisTitle.append 'tspan'
+    .style 'visibility', 'hidden'
+    .text xAxisLastDigit + ' '
+
+    xAxisTitle.append 'tspan'
+    .text 'тыс. вакансий'
+
+    yAxis = d3.svg.axis()
+    .scale y
+    .orient 'left'
+    .tickSize 3
+    .ticks 5
+    .tickFormat tickFormat
 
     g.append 'g'
     .attr 'class', 'axis y-axis'
     .call yAxis
+
+    yAxisTitleX = d3element.selectAll '.y-axis .tick text'
+    .last()
+    .node()
+    .getBBox().x
+
+    yAxisTitle = d3element.selectAll '.y-axis .tick'
+    .last()
     .append 'text'
-    .attr 'class', 'axis-title'
-    .attr 'x', 6
-    .attr 'y', 0
-    .attr 'dy', '.32em'
-    .style 'text-anchor', 'start'
-    .text 'Ср. кол-во резюме, тыс. шт.'
+
+    yAxisTitle.append 'tspan'
+    .attr 'x', yAxisTitleX
+    .attr 'dy', '1.32em'
+    .text 'тыс.'
+
+    yAxisTitle.append 'tspan'
+    .attr 'x', yAxisTitleX
+    .attr 'dy', '1em'
+    .text 'резюме'
 
     industryCirclesGroup = g.append 'g'
     .attr 'class', 'industry-circles'
@@ -106,8 +133,6 @@ app.directive 'chart', ($timeout) ->
       .attr 'cy', 0
       .attr 'r', 0
       .style 'fill', '#549fab'
-      .style 'stroke', 'none'
-      .style 'stroke-width', 0
       .style 'opacity', .7
       return
 
