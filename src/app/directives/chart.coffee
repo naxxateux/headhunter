@@ -172,38 +172,55 @@ app.directive 'chart', ($timeout) ->
       .text ratio
       return
 
-    industryCirclesGroup = g.append 'g'
-    .attr 'class', 'industry-circles'
+    industriesGroup = g.append 'g'
+    .attr 'class', 'industries'
     .attr 'clip-path', 'url(#clip-rect)'
 
     _.keys($scope.data).forEach (key) ->
-      industryCircleGroup = industryCirclesGroup.append 'g'
-      .attr 'class', 'industry-circle'
+      industryGroup = industriesGroup.append 'g'
+      .attr 'class', 'industry'
       .datum $scope.data[key]
 
-      industryCircleGroup.append 'circle'
+      industryGroup.append 'circle'
       .attr 'cx', 0
       .attr 'cy', 0
       .attr 'r', 0
       .style 'fill', color key
       .style 'opacity', .7
+
+      industryGroup.append 'path'
+      .style 'fill', 'none'
+      .style 'stroke', color key
+      .style 'stroke-width', 1
       return
+
+    getDataPiece = (data) -> _.find data, {'date': $scope.currentDate}
+
+    getDataPiecesBeforeDate = (data) ->
+      index = _.findIndex data, {'date': $scope.currentDate}
+      data.slice 0, index + 1
+
+    line = d3.svg.line()
+    .x (d) -> x d.nOfJobs
+    .y (d) -> y d.nOfCVs
+    .interpolate 'linear'
 
     updateGraph = ->
       console.log 'Graph updated → ' + $scope.currentDate.moment.format('MMMM YYYY')
 
-      industryCirclesGroup.selectAll '.industry-circle'
-      .transition()
-      .duration 500
-      .attr 'transform', (d) ->
-        dataPiece = _.find d, {'date': $scope.currentDate}
-        'translate(' + x(dataPiece.nOfJobs) + ', ' + y(dataPiece.nOfCVs) + ')'
+      industriesGroup.selectAll '.industry'
       .select 'circle'
       .transition()
       .duration 500
-      .attr 'r', (d) ->
-        dataPiece = _.find d, {'date': $scope.currentDate}
-        Math.sqrt dataPiece.avgSalary / Math.PI / 180 / $scope.zoomRatio
+      .attr 'cx', (data) -> x getDataPiece(data).nOfJobs
+      .attr 'cy', (data) -> y getDataPiece(data).nOfCVs
+      .attr 'r', (data) -> Math.sqrt getDataPiece(data).avgSalary / Math.PI / 180 / $scope.zoomRatio
+
+      industriesGroup.selectAll '.industry'
+      .select 'path'
+      .transition()
+      .duration 500
+      .attr 'd', (data) -> line getDataPiecesBeforeDate data
       return
 
     $scope.$watch 'currentDate', -> updateGraph()
