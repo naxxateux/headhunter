@@ -223,8 +223,8 @@ app.directive 'chart', ($timeout) ->
     getDataPiece = (data) -> _.find data, {'date': $scope.currentDate}
 
     getDataPiecesBeforeDate = (data) ->
-      index = _.findIndex data, {'date': $scope.currentDate}
-      data.slice 0, index + 1
+      dataIndex = _.findIndex data, {'date': $scope.currentDate}
+      data.slice 0, dataIndex + 1
 
     line = d3.svg.line()
     .x (d) -> x d.nOfJobs

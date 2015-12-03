@@ -36,7 +36,6 @@ app.directive 'dateSlider', ($document) ->
         monthsFromStart = 0 if monthsFromStart < 0
         monthsFromStart = nOfMonths - 1 if monthsFromStart > nOfMonths - 1
 
-        $scope.currentX = monthsFromStart * step
         $scope.currentDate = $scope.dates[monthsFromStart]
 
         $scope.$apply()
@@ -51,6 +50,11 @@ app.directive 'dateSlider', ($document) ->
       event.preventDefault()
       $document.on 'mousemove', mousemove
       $document.on 'mouseup', mouseup
+      return
+
+    $scope.$watch 'currentDate', ->
+      dateIndex = _.findIndex $scope.dates, $scope.currentDate
+      $scope.currentX = dateIndex * step
       return
 
     return
