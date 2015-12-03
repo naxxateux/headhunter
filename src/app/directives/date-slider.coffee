@@ -19,14 +19,15 @@ app.directive 'dateSlider', ($document) ->
     $scope.getDateX = (date) ->
       date.moment.diff($scope.dates[0].moment, 'months') * step
 
-    $scope.getCaptionText = (date, isStart) ->
+    $scope.getMonthCaption = (date) -> $scope.monthNames[date.moment.month()].short
+
+    $scope.getYearCaption = (date, isStart) ->
       month = date.moment.month()
       year = date.moment.year()
-
       if isStart or !month
-        $scope.monthNames[month].short + '<br>' + year
+        '' + year
       else
-        $scope.monthNames[month].short
+        ''
 
     $handle.on 'mousedown', (event) ->
       $('body').css cursor: 'pointer'

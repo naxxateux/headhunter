@@ -1,10 +1,17 @@
 <div class="date-slider">
-	<div class="date-slider__captions">
+	<div class="date-slider__year-captions">
 		<div
 			class="caption"
 			data-ng-repeat="date in dates track by $index"
 			data-ng-style="{'transform': 'translateX(' + getDateX(date) + 'px)'}"
-			data-ng-bind-html="getCaptionText(date, !$index) | trust"></div>
+			data-ng-bind-html="getYearCaption(date, !$index) | trust"></div>
+	</div>
+	<div class="date-slider__month-captions">
+		<div
+			class="caption"
+			data-ng-repeat="date in dates track by $index"
+			data-ng-style="{'transform': 'translateX(' + getDateX(date) + 'px)'}"
+			data-ng-bind-html="getMonthCaption(date) | trust"></div>
 	</div>
 	<div
 		class="date-slider__handle"

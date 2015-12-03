@@ -4,14 +4,25 @@
 	position: relative;
 	display: block;
 	width: 100%;
-	height: 65px;
+	height: 36px;
 }
 
-.date-slider__captions {
+.date-slider__year-captions {
 	position: relative;
 }
 
-.date-slider__captions .caption {
+.date-slider__year-captions .caption {
+	position: absolute;
+	top: -14px;
+	font-family: $helvetica-neue-regular;
+	font-size: $small-font-size;
+}
+
+.date-slider__month-captions {
+	position: relative;
+}
+
+.date-slider__month-captions .caption {
 	position: absolute;
 	font-family: $helvetica-neue-regular;
 	font-size: $small-font-size;
@@ -19,10 +30,10 @@
 
 .date-slider__handle {
 	position: absolute;
-	top: 35px;
+	top: 14px;
 	width: 17px;
-	height: 30px;
+	height: 22px;
 	background-image: url(../img/accessories/slider-handle.png);
-	background-size: 17px 30px;
+	background-size: 17px 22px;
 	cursor: pointer;
 }
