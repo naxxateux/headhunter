@@ -14,7 +14,7 @@
 .date-slider__captions .caption {
 	position: absolute;
 	font-family: $helvetica-neue-regular;
-	font-size: $common-font-size;
+	font-size: $small-font-size;
 }
 
 .date-slider__handle {
