@@ -140,7 +140,29 @@ app.directive 'chart', ($timeout) ->
     .attr 'dy', '1em'
     .text 'резюме'
 
-    jobCVRatios = [20, 10, 6, 5, 4, 3, 2, 1]
+    industriesGroup = g.append 'g'
+    .attr 'class', 'industries'
+    .attr 'clip-path', 'url(#clip-rect)'
+
+    _.keys($scope.data).forEach (key) ->
+      industryGroup = industriesGroup.append 'g'
+      .attr 'class', 'industry'
+      .datum $scope.data[key]
+
+      industryGroup.append 'circle'
+      .attr 'cx', 0
+      .attr 'cy', 0
+      .attr 'r', 0
+      .style 'fill', color key
+      .style 'opacity', .7
+
+      industryGroup.append 'path'
+      .style 'fill', 'none'
+      .style 'stroke', color key
+      .style 'stroke-width', 1
+      return
+
+    jobCVRatios = [20, 10, 7, 5, 4, 3, 2, 1]
 
     ratiosGroup = g.append 'g'
     .attr 'class', 'ratios'
@@ -174,28 +196,6 @@ app.directive 'chart', ($timeout) ->
       .style 'font-size', '.9em'
       .style 'fill', '#ccc'
       .text ratio
-      return
-
-    industriesGroup = g.append 'g'
-    .attr 'class', 'industries'
-    .attr 'clip-path', 'url(#clip-rect)'
-
-    _.keys($scope.data).forEach (key) ->
-      industryGroup = industriesGroup.append 'g'
-      .attr 'class', 'industry'
-      .datum $scope.data[key]
-
-      industryGroup.append 'circle'
-      .attr 'cx', 0
-      .attr 'cy', 0
-      .attr 'r', 0
-      .style 'fill', color key
-      .style 'opacity', .7
-
-      industryGroup.append 'path'
-      .style 'fill', 'none'
-      .style 'stroke', color key
-      .style 'stroke-width', 1
       return
 
     getDataPiece = (data) -> _.find data, {'date': $scope.currentDate}
