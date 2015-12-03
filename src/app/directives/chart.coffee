@@ -25,6 +25,9 @@ app.directive 'chart', ($timeout) ->
     width = outerWidth - padding.left - padding.right
     height = outerHeight - padding.top - padding.bottom
 
+    tooltip = d3element.select '.chart__tooltip'
+    tooltipOffset = 20
+
     svg = d3element.append 'svg'
     .classed 'chart__svg', true
     .attr 'width', outerWidth
@@ -155,6 +158,25 @@ app.directive 'chart', ($timeout) ->
       .attr 'r', 0
       .style 'fill', color key
       .style 'opacity', .7
+      .on 'mouseover', ->
+        d3.select(@).style 'opacity', .9
+
+        tooltip
+        .style 'display', 'block'
+        .style 'top', d3.event.pageY + 'px'
+        .style 'left', d3.event.pageX + tooltipOffset + 'px'
+        .html key
+        return
+      .on 'mousemove', ->
+        tooltip
+        .style 'top', d3.event.pageY + 'px'
+        .style 'left', d3.event.pageX + tooltipOffset + 'px'
+        return
+      .on 'mouseout', ->
+        d3.select(@).style 'opacity', .7
+
+        tooltip.style 'display', ''
+        return
 
       industryGroup.append 'path'
       .style 'fill', 'none'
