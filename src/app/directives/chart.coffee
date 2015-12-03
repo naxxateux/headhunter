@@ -215,7 +215,7 @@ app.directive 'chart', ($timeout) ->
       industriesGroup.selectAll '.industry'
       .select 'circle'
       .transition()
-      .duration 500
+      .duration 100
       .attr 'cx', (data) -> x getDataPiece(data).nOfJobs
       .attr 'cy', (data) -> y getDataPiece(data).nOfCVs
       .attr 'r', (data) -> Math.sqrt getDataPiece(data).avgSalary / Math.PI / 180 / $scope.zoomRatio
@@ -223,7 +223,7 @@ app.directive 'chart', ($timeout) ->
       industriesGroup.selectAll '.industry'
       .select 'path'
       .transition()
-      .duration 500
+      .duration 100
       .attr 'd', (data) -> line getDataPiecesBeforeDate data
       return
 
