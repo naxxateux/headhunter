@@ -16,6 +16,14 @@
   stroke-width: .1;
 }
 
+.chart__svg .industry path {
+  pointer-events: none;
+}
+
+.chart__svg .ratios {
+  pointer-events: none;
+}
+
 .chart__tooltip {
   position: absolute;
   display: none;
