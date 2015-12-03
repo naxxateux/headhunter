@@ -58,6 +58,10 @@ app.directive 'chart', ($timeout) ->
     xExtent[1] = xExtent[1] * 1.1 * $scope.zoomRatio
     yExtent[1] = yExtent[1] * 1.1 * $scope.zoomRatio
 
+    xyRatio = Math.ceil yExtent[1] / xExtent[1]
+
+    xExtent[1] = yExtent[1] / xyRatio
+
     x = d3.scale.linear()
     .domain xExtent
     .range [0, width]
