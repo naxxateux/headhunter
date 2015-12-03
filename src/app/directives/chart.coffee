@@ -7,6 +7,7 @@ app.directive 'chart', ($timeout) ->
     dates: '='
     currentDate: '='
     zoomRatio: '='
+    cloneZoomRatio: '='
   link: ($scope, $element, $attrs) ->
     d3.selection.prototype.last = -> d3.select @[0][@.size() - 1]
 
@@ -223,6 +224,22 @@ app.directive 'chart', ($timeout) ->
       .text ratio
       return
 
+    if $scope.zoomRatio is 1
+      zoneData = [
+        [0, y(yExtent[1] * $scope.cloneZoomRatio)]
+        [x(xExtent[1] * $scope.cloneZoomRatio), y(yExtent[1] * $scope.cloneZoomRatio)]
+        [x(xExtent[1] * $scope.cloneZoomRatio), height]
+      ]
+
+      g.append 'path'
+      .datum zoneData
+      .attr 'class', 'zone'
+      .attr 'd', d3.svg.line()
+      .style 'fill', 'none'
+      .style 'stroke', '#333'
+      .style 'stroke-width', .1
+      .style 'stroke-dasharray', '3, 3'
+
     getDataPiece = (data) -> _.find data, {'date': $scope.currentDate}
 
     getDataPiecesBeforeDate = (data) ->
@@ -243,7 +260,7 @@ app.directive 'chart', ($timeout) ->
       .duration 100
       .attr 'cx', (data) -> x getDataPiece(data).nOfJobs
       .attr 'cy', (data) -> y getDataPiece(data).nOfCVs
-      .attr 'r', (data) -> Math.sqrt getDataPiece(data).avgSalary / Math.PI / 180 / $scope.zoomRatio
+      .attr 'r', (data) -> Math.sqrt getDataPiece(data).avgSalary / Math.PI / 180
 
       industriesGroup.selectAll '.industry'
       .select 'path'

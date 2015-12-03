@@ -24,6 +24,10 @@
   pointer-events: none;
 }
 
+.chart__svg .zone {
+  pointer-events: none;
+}
+
 .chart__tooltip {
   position: absolute;
   display: none;
