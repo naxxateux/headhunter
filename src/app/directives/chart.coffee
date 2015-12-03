@@ -159,7 +159,7 @@ app.directive 'chart', ($timeout) ->
       .style 'fill', color key
       .style 'opacity', .7
       .on 'mouseover', ->
-        d3.select(@).style 'opacity', .9
+        d3.select(@).style 'opacity', .8
 
         tooltip
         .style 'display', 'block'
@@ -181,7 +181,10 @@ app.directive 'chart', ($timeout) ->
       industryGroup.append 'path'
       .style 'fill', 'none'
       .style 'stroke', color key
-      .style 'stroke-width', 1
+      .style 'opacity', .9
+      .style 'stroke-width', 2
+      .style 'stroke-linecap', 'round'
+      .style 'stroke-linejoin', 'round'
       return
 
     jobCVRatios = [20, 10, 7, 5, 4, 3, 2, 1]
@@ -246,7 +249,12 @@ app.directive 'chart', ($timeout) ->
       .select 'path'
       .transition()
       .duration 100
-      .attr 'd', (data) -> line getDataPiecesBeforeDate data
+      .attr 'd', (data) ->
+        dataPieces = getDataPiecesBeforeDate data
+
+        if dataPieces.length > 1
+          line dataPieces
+        else ''
       return
 
     $scope.$watch 'currentDate', -> updateGraph()
