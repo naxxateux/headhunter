@@ -1,7 +1,6 @@
 @import '../variables';
 
 .chart {
-  position: relative;
   font-family: $helvetica-neue-regular;
   font-size: $small-font-size;
   fill: #333;
