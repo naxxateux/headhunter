@@ -1,0 +1,21 @@
+@import '../variables';
+
+.checkboxes .checkbox {
+  font-family: $helvetica-neue-regular;
+  font-size: $small-font-size;
+  user-select: none;
+}
+
+.checkboxes .checkbox label {
+  cursor: pointer;
+}
+
+.checkboxes .checkbox input {
+  margin-right: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.checkboxes .checkbox:not(:first-child) {
+  margin-left: 20px;
+}

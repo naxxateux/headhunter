@@ -59,6 +59,9 @@ app.controller 'mainCtrl', ($scope) ->
     currentDate: undefined
     activeIndustries: []
     hoveredIndustry: ''
+    showIndustryPaths: true
+    showRatios: true
+    showSalaryHistory: false
 
   # Parse main data
   parseMainData = (error, rawData) ->

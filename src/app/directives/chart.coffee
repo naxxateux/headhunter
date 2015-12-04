@@ -5,20 +5,18 @@ app.directive 'chart', ($timeout) ->
   scope:
     data: '='
     dates: '='
-    currentDate: '='
+    model: '='
     colorScale: '='
     zoomRatio: '='
     cloneZoomRatio: '='
-    activeIndustries: '='
-    hoveredIndustry: '='
     monthNames: '='
   link: ($scope, $element, $attrs) ->
     d3.selection.prototype.last = -> d3.select @[0][@.size() - 1]
 
-    getDataPiece = (data) -> _.find data, {'date': $scope.currentDate}
+    getDataPiece = (data) -> _.find data, {'date': $scope.model.currentDate}
 
     getDataPiecesBeforeDate = (data) ->
-      dataIndex = _.findIndex data, {'date': $scope.currentDate}
+      dataIndex = _.findIndex data, {'date': $scope.model.currentDate}
       data.slice 0, dataIndex + 1
 
     element = $element[0]
@@ -218,6 +216,7 @@ app.directive 'chart', ($timeout) ->
 
     ratiosGroup = g.append 'g'
     .attr 'class', 'ratios'
+    .style 'opacity', 1
 
     jobCVRatios.forEach (ratio, i) ->
       ratioGroup = ratiosGroup.append 'g'
@@ -297,8 +296,6 @@ app.directive 'chart', ($timeout) ->
     .interpolate 'linear'
 
     updateGraph = ->
-      console.log 'Graph updated → Date: ' + $scope.currentDate.moment.format('MMMM YYYY')
-
       industriesGroup.selectAll '.industry'
       .select 'circle'
       .transition()
@@ -319,13 +316,11 @@ app.directive 'chart', ($timeout) ->
         else ''
 
       if $scope.zoomRatio is 1
-        dateCaption.text $scope.monthNames[$scope.currentDate.moment.month()].full + ' ' + $scope.currentDate.moment.year()
+        dateCaption.text $scope.monthNames[$scope.model.currentDate.moment.month()].full + ' ' + $scope.model.currentDate.moment.year()
       return
 
     updateIndustriesActivity = ->
-      console.log 'Graph updated → Industries: ' + $scope.activeIndustries
-
-      unless $scope.activeIndustries.length
+      unless $scope.model.activeIndustries.length
         industriesGroup.selectAll '.industry'
         .transition()
         .duration 90
@@ -335,19 +330,17 @@ app.directive 'chart', ($timeout) ->
         .transition()
         .duration 90
         .style 'opacity', (d) ->
-          if $scope.activeIndustries.indexOf(d.$key) is -1 then 0 else 1
+          if $scope.model.activeIndustries.indexOf(d.$key) is -1 then 0 else 1
       return
 
     updateIndustriesVisibility = ->
-      console.log 'Graph updated → Industry: ' + $scope.hoveredIndustry
-
-      unless $scope.activeIndustries.length
+      unless $scope.model.activeIndustries.length
         industriesGroup.selectAll '.industry'
         .transition()
         .duration 90
         .style 'opacity', (d) ->
-          if $scope.hoveredIndustry
-            if d.$key is $scope.hoveredIndustry then 1 else .15
+          if $scope.model.hoveredIndustry
+            if d.$key is $scope.model.hoveredIndustry then 1 else .15
           else
             1
       else
@@ -355,19 +348,43 @@ app.directive 'chart', ($timeout) ->
         .transition()
         .duration 90
         .style 'opacity', (d) ->
-          if $scope.hoveredIndustry
-            if $scope.activeIndustries.indexOf(d.$key) is -1
-              if d.$key is $scope.hoveredIndustry then .15 else 0
+          if $scope.model.hoveredIndustry
+            if $scope.model.activeIndustries.indexOf(d.$key) is -1
+              if d.$key is $scope.model.hoveredIndustry then .15 else 0
             else
               1
           else
-            if $scope.activeIndustries.indexOf(d.$key) is -1 then 0 else 1
+            if $scope.model.activeIndustries.indexOf(d.$key) is -1 then 0 else 1
       return
 
-    $scope.$watch 'currentDate', -> updateGraph()
+    updateIndustryPathsVisibility = ->
+      industriesGroup.selectAll '.industry'
+      .select 'path'
+      .transition()
+      .duration 90
+      .style 'stroke-opacity', if $scope.model.showIndustryPaths then .5 else 0
+      return
 
-    $scope.$watch 'activeIndustries', (-> updateIndustriesActivity()), true
+    updateRatiosVisibility = ->
+      ratiosGroup
+      .transition()
+      .duration 90
+      .style 'opacity', if $scope.model.showRatios then 1 else 0
+      return
 
-    $scope.$watch 'hoveredIndustry', -> updateIndustriesVisibility()
+    updateSalaryHistoryVisibility = ->
+      return
+
+    $scope.$watch 'model.currentDate', -> updateGraph()
+
+    $scope.$watch 'model.activeIndustries', (-> updateIndustriesActivity()), true
+
+    $scope.$watch 'model.hoveredIndustry', -> updateIndustriesVisibility()
+
+    $scope.$watch 'model.showIndustryPaths', -> updateIndustryPathsVisibility()
+
+    $scope.$watch 'model.showRatios', -> updateRatiosVisibility()
+
+    $scope.$watch 'model.showSalaryHistory', -> updateSalaryHistoryVisibility()
 
     return

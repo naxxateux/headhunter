@@ -1,5 +1,11 @@
 <div data-ng-if="isDataPrepared">
-  <div class="head">Рынок труда <img class="head__moscow-star" src="../img/accessories/moscow-star.png">Москвы</div>
+  <div class="head inline">Рынок труда <img class="head__moscow-star" src="../img/accessories/moscow-star.png">Москвы</div>
+  <div class="checkboxes-container inline">
+    <checkboxes
+      data-model="model">
+    </checkboxes>
+  </div>
+  <br class="clear-both" />
   <div class="date-slider-container inline">
     <date-slider
       data-dates="dates"
@@ -19,24 +25,20 @@
       <chart
         data-data="data"
         data-dates="dates"
-        data-current-date="model.currentDate"
+        data-model="model"
         data-color-scale="colorScale"
         data-zoom-ratio="1"
         data-clone-zoom-ratio="0.25"
-        data-active-industries="model.activeIndustries"
-        data-hovered-industry="model.hoveredIndustry"
         data-month-names="monthNames"></chart>
     </div>
     <div class="content__chart inline">
       <chart
         data-data="data"
         data-dates="dates"
-        data-current-date="model.currentDate"
+        data-model="model"
         data-color-scale="colorScale"
         data-zoom-ratio="0.25"
         data-clone-zoom-ratio="0"
-        data-active-industries="model.activeIndustries"
-        data-hovered-industry="model.hoveredIndustry"
         data-month-names="monthNames"></chart>
     </div>
     <br class="clear-both" />
