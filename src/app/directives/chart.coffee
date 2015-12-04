@@ -90,7 +90,7 @@ app.directive 'chart', ($timeout) ->
     xAxis = d3.svg.axis()
     .scale x
     .orient 'bottom'
-    .tickSize 3
+    .tickSize 0
     .ticks 5
     .tickFormat tickFormat
 
@@ -112,7 +112,7 @@ app.directive 'chart', ($timeout) ->
     .last()
     .append 'text'
     .attr 'x', xAxisTitleX
-    .attr 'y', 6
+    .attr 'y', 3
     .attr 'dy', '.71em'
 
     xAxisTitle.append 'tspan'
@@ -125,7 +125,7 @@ app.directive 'chart', ($timeout) ->
     yAxis = d3.svg.axis()
     .scale y
     .orient 'left'
-    .tickSize 3
+    .tickSize 0
     .ticks 5
     .tickFormat tickFormat
 
@@ -154,8 +154,8 @@ app.directive 'chart', ($timeout) ->
 
     g.append 'text'
     .attr 'class', 'joint-zero'
-    .attr 'x', -6
-    .attr 'y', height + 6
+    .attr 'x', -3
+    .attr 'y', height + 3
     .attr 'dy', '.71em'
     .style 'text-anchor', 'end'
     .text '0'
@@ -280,19 +280,15 @@ app.directive 'chart', ($timeout) ->
       return
 
     if $scope.zoomRatio is 1
-      zoneData = [
-        [0, y(yExtent[1] * $scope.cloneZoomRatio)]
-        [x(xExtent[1] * $scope.cloneZoomRatio), y(yExtent[1] * $scope.cloneZoomRatio)]
-        [x(xExtent[1] * $scope.cloneZoomRatio), height]
-      ]
-
-      g.append 'path'
-      .datum zoneData
+      g.append 'rect'
       .attr 'class', 'zone'
-      .attr 'd', d3.svg.line()
+      .attr 'x', 0
+      .attr 'y', y yExtent[1] * $scope.cloneZoomRatio
+      .attr 'width', x xExtent[1] * $scope.cloneZoomRatio
+      .attr 'height', height - y yExtent[1] * $scope.cloneZoomRatio
       .style 'fill', 'none'
-      .style 'stroke', '#333'
-      .style 'stroke-width', .1
+      .style 'stroke', '#bbb'
+      .style 'stroke-width', .5
       .style 'stroke-dasharray', '3, 3'
 
     line = d3.svg.line()
