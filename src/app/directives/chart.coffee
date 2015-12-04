@@ -181,7 +181,10 @@ app.directive 'chart', ($timeout) ->
         .style 'display', 'block'
         .style 'top', d3.event.pageY + 'px'
         .style 'left', d3.event.pageX + tooltipOffset + 'px'
-        .html key + ', ' + (getDataPiece($scope.data[key]).avgSalary * .001).toFixed() + ' тыс. руб.'
+        .html ->
+          avgSalary = getDataPiece($scope.data[key]).avgSalary
+
+          key + if avgSalary isnt 1000 then (', ' + (avgSalary * .001).toFixed() + ' тыс. руб.') else ''
         return
       .on 'mousemove', ->
         tooltip
