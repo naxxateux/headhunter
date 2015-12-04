@@ -87,7 +87,7 @@ app.directive 'chart', ($timeout) ->
     .range [height, 0]
 
     tickFormat = (d) ->
-      if d then d * .001 else ''
+      if d then '?' else ''
 
     xAxis = d3.svg.axis()
     .scale x
