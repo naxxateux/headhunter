@@ -7,6 +7,12 @@
   font-size: $header-font-size;
 }
 
+.head__moscow-star {
+  width: 22px;
+  height: 21px;
+  margin-right: 2px;
+}
+
 .date-slider-container {
   margin: 20px 0 0 $common-margin;
   width: 936px;
