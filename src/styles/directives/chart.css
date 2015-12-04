@@ -31,7 +31,7 @@
 
 .chart__svg .date-caption {
   font-family: $helvetica-neue-bold;
-  font-size: 40px;
+  font-size: 24px;
   fill: #ccc;
   pointer-events: none;
 }

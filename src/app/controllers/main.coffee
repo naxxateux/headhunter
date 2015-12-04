@@ -2,18 +2,18 @@ app.controller 'mainCtrl', ($scope) ->
   dateFormat = 'M/D/YYYY'
 
   $scope.monthNames = [
-    {full: 'Январь', short: 'янв'},
-    {full: 'Февраль', short: 'фев'},
-    {full: 'Март', short: 'мар'},
-    {full: 'Апрель', short: 'апр'},
-    {full: 'Май', short: 'май'},
-    {full: 'Июнь', short: 'июнь'},
-    {full: 'Июль', short: 'июль'},
-    {full: 'Август', short: 'авг'},
-    {full: 'Сентябрь', short: 'сен'},
-    {full: 'Октябрь', short: 'окт'},
-    {full: 'Ноябрь', short: 'ноя'},
-    {full: 'Декабрь', short: 'дек'}
+    {full: 'январь', short: 'янв'},
+    {full: 'февраль', short: 'фев'},
+    {full: 'март', short: 'мар'},
+    {full: 'апрель', short: 'апр'},
+    {full: 'май', short: 'май'},
+    {full: 'июнь', short: 'июнь'},
+    {full: 'июль', short: 'июль'},
+    {full: 'август', short: 'авг'},
+    {full: 'сентябрь', short: 'сен'},
+    {full: 'октябрь', short: 'окт'},
+    {full: 'ноябрь', short: 'ноя'},
+    {full: 'декабрь', short: 'дек'}
   ]
 
   colors = [
