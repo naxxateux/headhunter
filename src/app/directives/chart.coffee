@@ -195,7 +195,7 @@ app.directive 'chart', ($timeout) ->
     ratiosGroup = g.append 'g'
     .attr 'class', 'ratios'
 
-    jobCVRatios.forEach (ratio) ->
+    jobCVRatios.forEach (ratio, i) ->
       ratioGroup = ratiosGroup.append 'g'
       .attr 'class', 'ratio'
 
@@ -203,27 +203,56 @@ app.directive 'chart', ($timeout) ->
       nOfCVs = nOfJobs * ratio
       captionPosition = 'right'
 
+      if nOfCVs is yExtent[1]
+        captionPosition = 'top-corner'
+      else if nOfCVs > yExtent[1]
+        captionPosition = 'top'
+
       if nOfCVs > yExtent[1]
         nOfCVs = yExtent[1]
         nOfJobs = nOfCVs / ratio
-        captionPosition = 'top'
 
       ratioGroup.append 'line'
       .attr 'x1', x 0
       .attr 'y1', y 0
       .attr 'x2', x nOfJobs
       .attr 'y2', y nOfCVs
-      .style 'stroke', '#333'
-      .style 'stroke-width', .1
+      .style 'stroke', '#bbb'
+      .style 'stroke-width', .2
 
-      ratioGroup.append 'text'
-      .attr 'x', x nOfJobs
-      .attr 'y', y nOfCVs
-      .attr 'dy', if captionPosition is 'right' then '.32em' else '-.32em'
-      .attr 'dx', if captionPosition is 'right' then '.32em' else 0
-      .style 'font-size', '.9em'
-      .style 'fill', '#ccc'
-      .text ratio
+      unless i
+        ratioCaption = ratioGroup.append 'text'
+        .style 'fill', '#bbb'
+        .style 'font-size', '.9em'
+
+        ratioCaption.append 'tspan'
+        .attr 'x', x nOfJobs
+        .attr 'dx', '.32em'
+        .attr 'dy', '-.32em'
+        .text ratio + ' резюме'
+
+        ratioCaption.append 'tspan'
+        .attr 'x', x nOfJobs
+        .attr 'dx', '.32em'
+        .attr 'dy', '1em'
+        .text 'на вакансию'
+      else
+        ratioGroup.append 'text'
+        .attr 'x', x nOfJobs
+        .attr 'y', y nOfCVs
+        .attr 'dy', ->
+          if captionPosition is 'top' or captionPosition is 'top-corner'
+            '-.32em'
+          else
+            '.32em'
+        .attr 'dx', ->
+          if captionPosition is 'right' or captionPosition is 'top-corner'
+            '.32em'
+          else
+            0
+        .style 'fill', '#bbb'
+        .style 'font-size', '.9em'
+        .text ratio
       return
 
     if $scope.zoomRatio is 1
@@ -294,6 +323,7 @@ app.directive 'chart', ($timeout) ->
 
     updateIndustriesVisibility = ->
       console.log 'Graph updated → Industry: ' + $scope.hoveredIndustry
+
       unless $scope.activeIndustries.length
         industriesGroup.selectAll '.industry'
         .transition()
