@@ -11,6 +11,7 @@ app.directive 'chart', ($timeout) ->
     cloneZoomRatio: '='
     activeIndustries: '='
     hoveredIndustry: '='
+    monthNames: '='
   link: ($scope, $element, $attrs) ->
     d3.selection.prototype.last = -> d3.select @[0][@.size() - 1]
 
@@ -150,6 +151,12 @@ app.directive 'chart', ($timeout) ->
     .attr 'x', yAxisTitleX
     .attr 'dy', '1em'
     .text 'резюме'
+
+    dateCaption = g.append 'text'
+    .attr 'class', 'date-caption'
+    .attr 'x', width
+    .attr 'y', height - 20
+    .style 'text-anchor', 'end'
 
     industriesGroup = g.append 'g'
     .attr 'class', 'industries'
@@ -303,6 +310,9 @@ app.directive 'chart', ($timeout) ->
         if dataPieces.length > 1
           line dataPieces
         else ''
+
+      if $scope.zoomRatio is 1
+        dateCaption.text $scope.monthNames[$scope.currentDate.moment.month()].full + ' ' + $scope.currentDate.moment.year()
       return
 
     updateIndustriesActivity = ->
