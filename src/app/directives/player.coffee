@@ -7,7 +7,6 @@ app.directive 'player', ($document) ->
     currentDate: '='
   link: ($scope, $element, $attrs) ->
     $scope.isPlaying = false
-    $scope.isPlayButtonDisabled = false
     intervalId = undefined
 
     $scope.playButtonClick = ->
@@ -16,8 +15,8 @@ app.directive 'player', ($document) ->
       dateIndex++
 
       if dateIndex is $scope.dates.length
-        $scope.isPlaying = false
-        clearInterval intervalId
+        dateIndex = 0
+        $scope.currentDate = $scope.dates[dateIndex]
 
       intervalId = setInterval ->
         if dateIndex is $scope.dates.length
@@ -36,9 +35,6 @@ app.directive 'player', ($document) ->
       clearInterval intervalId
       return
 
-    $scope.$watch 'currentDate', ->
-      dateIndex = _.findIndex $scope.dates, $scope.currentDate
-      $scope.isPlayButtonDisabled = dateIndex is $scope.dates.length - 1
-      return
+    $scope.$watch 'currentDate', -> dateIndex = _.findIndex $scope.dates, $scope.currentDate
 
     return
