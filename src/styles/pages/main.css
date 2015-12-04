@@ -26,3 +26,9 @@
   width: 540px;
   height: 440px;
 }
+
+.legend-container {
+  position: absolute;
+  top: 73px;
+  left: 1025px;
+}

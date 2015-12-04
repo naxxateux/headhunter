@@ -6,8 +6,10 @@ app.directive 'chart', ($timeout) ->
     data: '='
     dates: '='
     currentDate: '='
+    colorScale: '='
     zoomRatio: '='
     cloneZoomRatio: '='
+    activeIndustries: '='
   link: ($scope, $element, $attrs) ->
     d3.selection.prototype.last = -> d3.select @[0][@.size() - 1]
 
@@ -73,8 +75,6 @@ app.directive 'chart', ($timeout) ->
     y = d3.scale.linear()
     .domain yExtent
     .range [height, 0]
-
-    color = d3.scale.category20()
 
     tickFormat = (d) ->
       d * 0.001
@@ -151,16 +151,17 @@ app.directive 'chart', ($timeout) ->
     _.keys($scope.data).forEach (key) ->
       industryGroup = industriesGroup.append 'g'
       .attr 'class', 'industry'
+      .style 'opacity', 1
       .datum $scope.data[key]
 
       industryGroup.append 'circle'
       .attr 'cx', 0
       .attr 'cy', 0
       .attr 'r', 0
-      .style 'fill', color key
-      .style 'opacity', .7
+      .style 'fill', $scope.colorScale key
+      .style 'opacity', .6
       .on 'mouseover', ->
-        d3.select(@).style 'opacity', .8
+        d3.select(@).style 'opacity', .7
 
         tooltip
         .style 'display', 'block'
@@ -174,15 +175,15 @@ app.directive 'chart', ($timeout) ->
         .style 'left', d3.event.pageX + tooltipOffset + 'px'
         return
       .on 'mouseout', ->
-        d3.select(@).style 'opacity', .7
+        d3.select(@).style 'opacity', .6
 
         tooltip.style 'display', ''
         return
 
       industryGroup.append 'path'
       .style 'fill', 'none'
-      .style 'stroke', color key
-      .style 'opacity', .9
+      .style 'stroke', $scope.colorScale key
+      .style 'stroke-opacity', .5
       .style 'stroke-width', 2
       .style 'stroke-linecap', 'round'
       .style 'stroke-linejoin', 'round'
@@ -252,7 +253,7 @@ app.directive 'chart', ($timeout) ->
     .interpolate 'linear'
 
     updateGraph = ->
-      console.log 'Graph updated → ' + $scope.currentDate.moment.format('MMMM YYYY')
+      console.log 'Graph updated → Date: ' + $scope.currentDate.moment.format('MMMM YYYY')
 
       industriesGroup.selectAll '.industry'
       .select 'circle'
@@ -274,6 +275,24 @@ app.directive 'chart', ($timeout) ->
         else ''
       return
 
+    updateIndustriesVisibility = ->
+      console.log 'Graph updated → Industries: ' + $scope.activeIndustries
+
+      unless $scope.activeIndustries.length
+        industriesGroup.selectAll '.industry'
+        .transition()
+        .duration 300
+        .style 'opacity', 1
+      else
+        industriesGroup.selectAll '.industry'
+        .transition()
+        .duration 300
+        .style 'opacity', (d) ->
+          if $scope.activeIndustries.indexOf(d.$key) is -1 then 0 else 1
+      return
+
     $scope.$watch 'currentDate', -> updateGraph()
+
+    $scope.$watch 'activeIndustries', (-> updateIndustriesVisibility()), true
 
     return

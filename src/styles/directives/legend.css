@@ -1,0 +1,60 @@
+@import '../variables';
+
+.legend {
+  font-family: $helvetica-neue-regular;
+  font-size: $small-font-size;
+  user-select: none;
+}
+
+.legend__header {
+  margin: 0 0 5px 22px;
+  width: 148px;
+}
+
+.legend__header .first {
+  font-weight: bold;
+  float: left;
+}
+
+.legend__header .second {
+  float: right;
+}
+
+.legend__table {
+  border-spacing: 0;
+}
+
+.legend__table tr {
+  color: #bbb;
+}
+
+.legend__table tr.active {
+  color: #000;
+}
+
+.legend__table tr:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.legend__table td {
+  vertical-align: top;
+  padding: 0 0 3px 5px;
+}
+
+.legend__table td.icon {
+  width: 14px;
+  height: 14px;
+}
+
+.legend__table td.numerical {
+  text-align: right;
+  padding-left: 15px;
+}
+
+.legend__table .color-sample {
+  width: 12px;
+  height: 12px;
+  border-radius: 7px;
+  opacity: .7;
+}

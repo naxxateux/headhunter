@@ -16,6 +16,40 @@ app.controller 'mainCtrl', ($scope) ->
     {full: 'декабре', short: 'дек'}
   ]
 
+  colors = [
+    '#3dac65'
+    '#a54cae'
+    '#e4447c'
+    '#3b9685'
+    '#f66768'
+    '#d78a2e'
+    '#da4043'
+    '#5a7ddc'
+    '#7867a0'
+    '#67a127'
+    '#a78045'
+    '#ee6c19'
+    '#3780fa'
+    '#43b85d'
+    '#e43c8f'
+    '#2b7a9a'
+    '#b2881a'
+    '#e44f65'
+    '#d07f84'
+    '#0fad99'
+    '#6e92ba'
+    '#a794ca'
+    '#4ba627'
+    '#e57a5a'
+    '#48a161'
+    '#2570c0'
+    '#12a9e3'
+    '#809924'
+  ]
+
+  $scope.colorScale = d3.scale.ordinal()
+  .range colors
+
   $scope.isDataPrepared = false
 
   $scope.data = {}
@@ -23,6 +57,8 @@ app.controller 'mainCtrl', ($scope) ->
 
   $scope.model =
     currentDate: undefined
+
+  $scope.activeIndustries = []
 
   # Parse main data
   parseMainData = (error, rawData) ->

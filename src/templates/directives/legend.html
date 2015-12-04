@@ -1,0 +1,21 @@
+<div class="legend">
+  <div class="legend__header">
+    <span class="first">Профсферы</span>
+    <span class="second">ср. з/п т. р.</span>
+    <br class="clear-both" />
+  </div>
+  <table class="legend__table">
+    <tr
+      data-ng-repeat="(key, value) in data | toArray | orderBy:[getLastDateAvgSalary, getLastDateNOfJobs]:true"
+      data-ng-class="{'active': isIndustryActive(value.$key)}"
+      data-ng-click="industryClick(value.$key)">
+      <td class="icon">
+        <div
+          class="color-sample"
+          data-ng-style="{'background-color': colorScale(value.$key)}"></div>
+      </td>
+      <td>{{value.$key}}</td>
+      <td class="numerical">{{getCurrentDateAvgSalary(value)}}</td>
+    </tr>
+  </table>
+</div>

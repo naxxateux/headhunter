@@ -20,17 +20,30 @@
         data-data="data"
         data-dates="dates"
         data-current-date="model.currentDate"
+        data-color-scale="colorScale"
         data-zoom-ratio="1"
-        data-clone-zoom-ratio="0.25"></chart>
+        data-clone-zoom-ratio="0.25"
+        data-active-industries="activeIndustries"></chart>
     </div>
     <div class="content__chart inline">
       <chart
         data-data="data"
         data-dates="dates"
         data-current-date="model.currentDate"
+        data-color-scale="colorScale"
         data-zoom-ratio="0.25"
-        data-clone-zoom-ratio="0"></chart>
+        data-clone-zoom-ratio="0"
+        data-active-industries="activeIndustries"></chart>
     </div>
     <br class="clear-both" />
+  </div>
+  <div class="legend-container">
+    <legend
+      data-data="data"
+      data-last-date="dates[dates.length - 1]"
+      data-current-date="model.currentDate"
+      data-color-scale="colorScale"
+      data-active-industries="activeIndustries">
+    </legend>
   </div>
 </div>

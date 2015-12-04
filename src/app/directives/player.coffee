@@ -40,4 +40,5 @@ app.directive 'player', ($document) ->
       dateIndex = _.findIndex $scope.dates, $scope.currentDate
       $scope.isPlayButtonDisabled = dateIndex is $scope.dates.length - 1
       return
+      
     return
