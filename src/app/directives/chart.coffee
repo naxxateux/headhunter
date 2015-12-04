@@ -282,34 +282,35 @@ app.directive 'chart', ($timeout) ->
       unless $scope.activeIndustries.length
         industriesGroup.selectAll '.industry'
         .transition()
-        .duration 180
+        .duration 90
         .style 'opacity', 1
       else
         industriesGroup.selectAll '.industry'
         .transition()
-        .duration 180
+        .duration 90
         .style 'opacity', (d) ->
           if $scope.activeIndustries.indexOf(d.$key) is -1 then 0 else 1
       return
 
     updateIndustriesVisibility = ->
+      console.log 'Graph updated → Industry: ' + $scope.hoveredIndustry
       unless $scope.activeIndustries.length
         industriesGroup.selectAll '.industry'
         .transition()
-        .duration 180
+        .duration 90
         .style 'opacity', (d) ->
           if $scope.hoveredIndustry
-            if d.$key is $scope.hoveredIndustry then 1 else .3
+            if d.$key is $scope.hoveredIndustry then 1 else .15
           else
             1
       else
         industriesGroup.selectAll '.industry'
         .transition()
-        .duration 180
+        .duration 90
         .style 'opacity', (d) ->
           if $scope.hoveredIndustry
             if $scope.activeIndustries.indexOf(d.$key) is -1
-              if d.$key is $scope.hoveredIndustry then .3 else 0
+              if d.$key is $scope.hoveredIndustry then .15 else 0
             else
               1
           else
