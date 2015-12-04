@@ -85,7 +85,7 @@ app.directive 'chart', ($timeout) ->
     .range [height, 0]
 
     tickFormat = (d) ->
-      d * .001
+      if d then d * .001 else ''
 
     xAxis = d3.svg.axis()
     .scale x
@@ -151,6 +151,14 @@ app.directive 'chart', ($timeout) ->
     .attr 'x', yAxisTitleX
     .attr 'dy', '1em'
     .text 'резюме'
+
+    g.append 'text'
+    .attr 'class', 'joint-zero'
+    .attr 'x', -6
+    .attr 'y', height + 6
+    .attr 'dy', '.71em'
+    .style 'text-anchor', 'end'
+    .text '0'
 
     dateCaption = g.append 'text'
     .attr 'class', 'date-caption'
