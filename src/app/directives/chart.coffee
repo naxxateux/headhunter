@@ -13,7 +13,11 @@ app.directive 'chart', ($timeout) ->
   link: ($scope, $element, $attrs) ->
     d3.selection.prototype.last = -> d3.select @[0][@.size() - 1]
 
-    getDataPiece = (data) -> _.find data, {'date': $scope.model.currentDate}
+    getDataPiece = (data, date) ->
+      unless date
+        _.find data, {'date': $scope.model.currentDate}
+      else
+        _.find data, {'date': date}
 
     getDataPiecesBeforeDate = (data) ->
       dataIndex = _.findIndex data, {'date': $scope.model.currentDate}
@@ -210,6 +214,21 @@ app.directive 'chart', ($timeout) ->
       .style 'stroke-width', 2
       .style 'stroke-linecap', 'round'
       .style 'stroke-linejoin', 'round'
+
+      salaryHistory = industryGroup.append 'g'
+      .attr 'class', 'salary-history'
+      .style 'opacity', 1
+
+      $scope.dates.forEach (date) ->
+        salaryHistory.append 'circle'
+        .datum date
+        .attr 'cx', x getDataPiece($scope.data[key], date).nOfJobs
+        .attr 'cy', y getDataPiece($scope.data[key], date).nOfCVs
+        .attr 'r', (data) -> Math.sqrt getDataPiece($scope.data[key], date).avgSalary / Math.PI / 180
+        .style 'fill', $scope.colorScale key
+        .style 'opacity', .6
+        .style 'visibility', 'hidden'
+        return
       return
 
     jobCVRatios = [20, 10, 7, 5, 4, 3, 2, 1]
@@ -241,7 +260,7 @@ app.directive 'chart', ($timeout) ->
       .attr 'x2', x nOfJobs
       .attr 'y2', y nOfCVs
       .style 'stroke', '#bbb'
-      .style 'stroke-width', .2
+      .style 'stroke-width', .5
 
       unless i
         ratioCaption = ratioGroup.append 'text'
@@ -286,7 +305,7 @@ app.directive 'chart', ($timeout) ->
       .attr 'width', x xExtent[1] * $scope.cloneZoomRatio
       .attr 'height', height - y yExtent[1] * $scope.cloneZoomRatio
       .style 'fill', 'none'
-      .style 'stroke', '#bbb'
+      .style 'stroke', '#999'
       .style 'stroke-width', .5
       .style 'stroke-dasharray', '3, 3'
 
@@ -314,6 +333,11 @@ app.directive 'chart', ($timeout) ->
         if dataPieces.length > 1
           line dataPieces
         else ''
+
+      industriesGroup.selectAll '.industry'
+      .select '.salary-history'
+      .selectAll 'circle'
+      .style 'visibility', (d) -> if $scope.model.currentDate.moment.diff(d.moment, 'days') > 0 then 'visible' else 'hidden'
 
       if $scope.zoomRatio is 1
         dateCaption.text $scope.monthNames[$scope.model.currentDate.moment.month()].full + ' ' + $scope.model.currentDate.moment.year()
@@ -373,6 +397,11 @@ app.directive 'chart', ($timeout) ->
       return
 
     updateSalaryHistoryVisibility = ->
+      industriesGroup.selectAll '.industry'
+      .select '.salary-history'
+      .transition()
+      .duration 90
+      .style 'opacity', if $scope.model.showSalaryHistory then 1 else 0
       return
 
     $scope.$watch 'model.currentDate', -> updateGraph()
