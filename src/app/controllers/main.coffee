@@ -57,8 +57,8 @@ app.controller 'mainCtrl', ($scope) ->
 
   $scope.model =
     currentDate: undefined
-
-  $scope.activeIndustries = []
+    activeIndustries: []
+    hoveredIndustry: ''
 
   # Parse main data
   parseMainData = (error, rawData) ->

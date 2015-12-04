@@ -5,16 +5,15 @@ app.directive 'legend', ($document) ->
   scope:
     data: '='
     lastDate: '='
-    currentDate: '='
+    model: '='
     colorScale: '='
-    activeIndustries: '='
   link: ($scope, $element, $attrs) ->
     $scope.getLastDateAvgSalary = (data) -> _.find(data, {'date': $scope.lastDate}).avgSalary
 
     $scope.getLastDateNOfJobs = (data) -> _.find(data, {'date': $scope.lastDate}).nOfJobs
 
     $scope.getCurrentDateAvgSalary = (data) ->
-      avgSalary = _.find(data, {'date': $scope.currentDate}).avgSalary
+      avgSalary = _.find(data, {'date': $scope.model.currentDate}).avgSalary
 
       if avgSalary isnt 1000
         (avgSalary * 0.001).toFixed()
@@ -22,17 +21,17 @@ app.directive 'legend', ($document) ->
         ''
 
     $scope.isIndustryActive = (industry) ->
-      unless $scope.activeIndustries.length
+      unless $scope.model.activeIndustries.length
         true
       else
-        $scope.activeIndustries.indexOf(industry) isnt -1
+        $scope.model.activeIndustries.indexOf(industry) isnt -1
 
     $scope.industryClick = (industry) ->
-      industryIndex = $scope.activeIndustries.indexOf industry
+      industryIndex = $scope.model.activeIndustries.indexOf industry
 
       if industryIndex is -1
-        $scope.activeIndustries.push industry
+        $scope.model.activeIndustries.push industry
       else
-        $scope.activeIndustries.splice industryIndex, 1
+        $scope.model.activeIndustries.splice industryIndex, 1
 
     return

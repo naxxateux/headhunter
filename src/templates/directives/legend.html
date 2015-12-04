@@ -8,7 +8,9 @@
     <tr
       data-ng-repeat="(key, value) in data | toArray | orderBy:[getLastDateAvgSalary, getLastDateNOfJobs]:true"
       data-ng-class="{'active': isIndustryActive(value.$key)}"
-      data-ng-click="industryClick(value.$key)">
+      data-ng-click="industryClick(value.$key)"
+      data-ng-mouseenter="model.hoveredIndustry = value.$key"
+      data-ng-mouseleave="model.hoveredIndustry = ''">
       <td class="icon">
         <div
           class="color-sample"

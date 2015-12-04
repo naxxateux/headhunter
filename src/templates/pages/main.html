@@ -23,7 +23,8 @@
         data-color-scale="colorScale"
         data-zoom-ratio="1"
         data-clone-zoom-ratio="0.25"
-        data-active-industries="activeIndustries"></chart>
+        data-active-industries="model.activeIndustries"
+        data-hovered-industry="model.hoveredIndustry"></chart>
     </div>
     <div class="content__chart inline">
       <chart
@@ -33,7 +34,8 @@
         data-color-scale="colorScale"
         data-zoom-ratio="0.25"
         data-clone-zoom-ratio="0"
-        data-active-industries="activeIndustries"></chart>
+        data-active-industries="model.activeIndustries"
+        data-hovered-industry="model.hoveredIndustry"></chart>
     </div>
     <br class="clear-both" />
   </div>
@@ -41,9 +43,8 @@
     <legend
       data-data="data"
       data-last-date="dates[dates.length - 1]"
-      data-current-date="model.currentDate"
-      data-color-scale="colorScale"
-      data-active-industries="activeIndustries">
+      data-model="model"
+      data-color-scale="colorScale">
     </legend>
   </div>
 </div>

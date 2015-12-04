@@ -10,6 +10,7 @@ app.directive 'chart', ($timeout) ->
     zoomRatio: '='
     cloneZoomRatio: '='
     activeIndustries: '='
+    hoveredIndustry: '='
   link: ($scope, $element, $attrs) ->
     d3.selection.prototype.last = -> d3.select @[0][@.size() - 1]
 
@@ -275,7 +276,7 @@ app.directive 'chart', ($timeout) ->
         else ''
       return
 
-    updateIndustriesVisibility = ->
+    updateIndustriesActivity = ->
       console.log 'Graph updated → Industries: ' + $scope.activeIndustries
 
       unless $scope.activeIndustries.length
@@ -291,8 +292,34 @@ app.directive 'chart', ($timeout) ->
           if $scope.activeIndustries.indexOf(d.$key) is -1 then 0 else 1
       return
 
+    updateIndustriesVisibility = ->
+      unless $scope.activeIndustries.length
+        industriesGroup.selectAll '.industry'
+        .transition()
+        .duration 180
+        .style 'opacity', (d) ->
+          if $scope.hoveredIndustry
+            if d.$key is $scope.hoveredIndustry then 1 else .3
+          else
+            1
+      else
+        industriesGroup.selectAll '.industry'
+        .transition()
+        .duration 180
+        .style 'opacity', (d) ->
+          if $scope.hoveredIndustry
+            if $scope.activeIndustries.indexOf(d.$key) is -1
+              if d.$key is $scope.hoveredIndustry then .3 else 0
+            else
+              1
+          else
+            if $scope.activeIndustries.indexOf(d.$key) is -1 then 0 else 1
+      return
+
     $scope.$watch 'currentDate', -> updateGraph()
 
-    $scope.$watch 'activeIndustries', (-> updateIndustriesVisibility()), true
+    $scope.$watch 'activeIndustries', (-> updateIndustriesActivity()), true
+
+    $scope.$watch 'hoveredIndustry', -> updateIndustriesVisibility()
 
     return
