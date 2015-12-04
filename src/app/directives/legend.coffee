@@ -16,7 +16,7 @@ app.directive 'legend', ($document) ->
       avgSalary = _.find(data, {'date': $scope.model.currentDate}).avgSalary
 
       if avgSalary isnt 1000
-        (avgSalary * 0.001).toFixed()
+        (avgSalary * .001).toFixed()
       else
         ''
 

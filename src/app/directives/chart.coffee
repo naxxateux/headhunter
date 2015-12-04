@@ -14,6 +14,12 @@ app.directive 'chart', ($timeout) ->
   link: ($scope, $element, $attrs) ->
     d3.selection.prototype.last = -> d3.select @[0][@.size() - 1]
 
+    getDataPiece = (data) -> _.find data, {'date': $scope.currentDate}
+
+    getDataPiecesBeforeDate = (data) ->
+      dataIndex = _.findIndex data, {'date': $scope.currentDate}
+      data.slice 0, dataIndex + 1
+
     element = $element[0]
     d3element = d3.select element
 
@@ -78,7 +84,7 @@ app.directive 'chart', ($timeout) ->
     .range [height, 0]
 
     tickFormat = (d) ->
-      d * 0.001
+      d * .001
 
     xAxis = d3.svg.axis()
     .scale x
@@ -168,7 +174,7 @@ app.directive 'chart', ($timeout) ->
         .style 'display', 'block'
         .style 'top', d3.event.pageY + 'px'
         .style 'left', d3.event.pageX + tooltipOffset + 'px'
-        .html key
+        .html key + ', ' + (getDataPiece($scope.data[key]).avgSalary * .001).toFixed() + ' тыс. руб.'
         return
       .on 'mousemove', ->
         tooltip
@@ -270,12 +276,6 @@ app.directive 'chart', ($timeout) ->
       .style 'stroke', '#333'
       .style 'stroke-width', .1
       .style 'stroke-dasharray', '3, 3'
-
-    getDataPiece = (data) -> _.find data, {'date': $scope.currentDate}
-
-    getDataPiecesBeforeDate = (data) ->
-      dataIndex = _.findIndex data, {'date': $scope.currentDate}
-      data.slice 0, dataIndex + 1
 
     line = d3.svg.line()
     .x (d) -> x d.nOfJobs
