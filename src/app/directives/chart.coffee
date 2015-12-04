@@ -258,7 +258,7 @@ app.directive 'chart', ($timeout) ->
       industriesGroup.selectAll '.industry'
       .select 'circle'
       .transition()
-      .duration 100
+      .duration 180
       .attr 'cx', (data) -> x getDataPiece(data).nOfJobs
       .attr 'cy', (data) -> y getDataPiece(data).nOfCVs
       .attr 'r', (data) -> Math.sqrt getDataPiece(data).avgSalary / Math.PI / 180
@@ -266,7 +266,7 @@ app.directive 'chart', ($timeout) ->
       industriesGroup.selectAll '.industry'
       .select 'path'
       .transition()
-      .duration 100
+      .duration 180
       .attr 'd', (data) ->
         dataPieces = getDataPiecesBeforeDate data
 
@@ -281,12 +281,12 @@ app.directive 'chart', ($timeout) ->
       unless $scope.activeIndustries.length
         industriesGroup.selectAll '.industry'
         .transition()
-        .duration 300
+        .duration 180
         .style 'opacity', 1
       else
         industriesGroup.selectAll '.industry'
         .transition()
-        .duration 300
+        .duration 180
         .style 'opacity', (d) ->
           if $scope.activeIndustries.indexOf(d.$key) is -1 then 0 else 1
       return

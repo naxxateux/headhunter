@@ -28,7 +28,7 @@ app.directive 'player', ($document) ->
           dateIndex++
         $scope.$apply()
         return
-      , 500
+      , 180
       return
 
     $scope.stopButtonClick = ->
@@ -40,5 +40,5 @@ app.directive 'player', ($document) ->
       dateIndex = _.findIndex $scope.dates, $scope.currentDate
       $scope.isPlayButtonDisabled = dateIndex is $scope.dates.length - 1
       return
-      
+
     return
