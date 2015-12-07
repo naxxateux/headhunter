@@ -17,38 +17,28 @@ app.controller 'mainCtrl', ($scope) ->
   ]
 
   colors = [
-    '#3dac65'
-    '#a54cae'
-    '#e4447c'
-    '#3b9685'
-    '#f66768'
-    '#d78a2e'
-    '#da4043'
-    '#5a7ddc'
-    '#7867a0'
-    '#67a127'
-    '#a78045'
-    '#ee6c19'
-    '#3780fa'
-    '#43b85d'
-    '#e43c8f'
-    '#2b7a9a'
-    '#b2881a'
-    '#e44f65'
-    '#d07f84'
-    '#0fad99'
-    '#6e92ba'
-    '#a794ca'
-    '#4ba627'
-    '#e57a5a'
-    '#48a161'
-    '#2570c0'
-    '#12a9e3'
-    '#809924'
+    '#1f77b4'
+    '#17becf'
+    '#ff7f0e'
+    '#2ca02c'
+    '#d62728'
+    '#9467bd'
+    '#8c564b'
+    '#e377c2'
+    '#7f7f7f'
+    '#bcbd22'
+    '#aec7e8'
+    '#ffbb78'
+    '#c5b0d5'
+    '#c7c7c7'
+    '#ff9896'
   ]
 
-  $scope.colorScale = d3.scale.ordinal()
-  .range colors
+  neutralColor = '#666'
+
+  industryColors = {}
+
+  $scope.colorScale = (industry) -> industryColors[industry]
 
   $scope.isDataPrepared = false
 
@@ -108,6 +98,18 @@ app.controller 'mainCtrl', ($scope) ->
 
         $scope.data[industry].push dataPiece
         return
+      return
+
+    _.keys $scope.data
+    .sort (a, b) ->
+      a = _.find($scope.data[a], {'date': $scope.dates[$scope.dates.length - 1]}).avgSalary
+      b = _.find($scope.data[b], {'date': $scope.dates[$scope.dates.length - 1]}).avgSalary
+      b - a
+    .forEach (industry, i) ->
+      if i < colors.length
+        industryColors[industry] = colors[i]
+      else
+        industryColors[industry] = neutralColor
       return
 
     $scope.isDataPrepared = true
