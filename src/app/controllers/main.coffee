@@ -30,7 +30,7 @@ app.controller 'mainCtrl', ($scope) ->
     '#aec7e8'
     '#ffbb78'
     '#c5b0d5'
-    '#c7c7c7'
+    '#00ab9c'
     '#ff9896'
   ]
 
