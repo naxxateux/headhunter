@@ -183,9 +183,9 @@ app.directive 'chart', ($timeout) ->
       .attr 'cy', 0
       .attr 'r', 0
       .style 'fill', $scope.colorScale key
-      .style 'opacity', .6
+      .style 'opacity', .7
       .on 'mouseover', ->
-        d3.select(@).style 'opacity', .7
+        d3.select(@).style 'opacity', .8
 
         tooltip
         .style 'display', 'block'
@@ -202,7 +202,7 @@ app.directive 'chart', ($timeout) ->
         .style 'left', d3.event.pageX + tooltipOffset + 'px'
         return
       .on 'mouseout', ->
-        d3.select(@).style 'opacity', .6
+        d3.select(@).style 'opacity', .7
 
         tooltip.style 'display', ''
         return
@@ -226,7 +226,7 @@ app.directive 'chart', ($timeout) ->
         .attr 'cy', y getDataPiece($scope.data[key], date).nOfCVs
         .attr 'r', (data) -> Math.sqrt getDataPiece($scope.data[key], date).avgSalary / Math.PI / 180
         .style 'fill', $scope.colorScale key
-        .style 'opacity', .6
+        .style 'opacity', .7
         .style 'visibility', 'hidden'
         return
       return
