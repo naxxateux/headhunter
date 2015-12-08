@@ -297,18 +297,6 @@ app.directive 'chart', ($timeout) ->
         .text ratio
       return
 
-    if $scope.zoomRatio is 1
-      g.append 'rect'
-      .attr 'class', 'zone'
-      .attr 'x', 0
-      .attr 'y', y yExtent[1] * $scope.cloneZoomRatio
-      .attr 'width', x xExtent[1] * $scope.cloneZoomRatio
-      .attr 'height', height - y yExtent[1] * $scope.cloneZoomRatio
-      .style 'fill', 'none'
-      .style 'stroke', '#999'
-      .style 'stroke-width', .5
-      .style 'stroke-dasharray', '3, 3'
-
     line = d3.svg.line()
     .x (d) -> x d.nOfJobs
     .y (d) -> y d.nOfCVs
